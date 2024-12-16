@@ -1,0 +1,23 @@
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - ./data/raw/tweets_sentiment.csv
+    - ./src/data/data_ingestion.py
+    outs:
+    - ./data/raw/filtered_df.csv
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - ./data/raw/filtered_df.csv
+    - ./src/data/data_preprocessing.py
+    outs:
+    - ./data/interim/pre_processed_df.csv
+  feature_engineering:
+    cmd: python src/features/feature_engineering.py
+    deps:
+    - ./data/interim/pre_processed_df.csv
+    - ./src/features/feature_engineering.py
+    outs:
+    - ./data/processed/test_tfidf.csv
+    - ./data/processed/train_tfidf.csv

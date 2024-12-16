@@ -1,0 +1,54 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: ./data/raw/tweets_sentiment.csv
+      hash: md5
+      md5: df952449d6f9b5f9fdfe3fc53ddef7ca
+      size: 238803811
+    - path: ./src/data/data_ingestion.py
+      hash: md5
+      md5: 77981f7456aed5cf3a08e25c97fe31e2
+      size: 3645
+    outs:
+    - path: ./data/raw/filtered_df.csv
+      hash: md5
+      md5: 30ebe1ecf42be567ef991eceb8f22620
+      size: 125819350
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: ./data/raw/filtered_df.csv
+      hash: md5
+      md5: 30ebe1ecf42be567ef991eceb8f22620
+      size: 125819350
+    - path: ./src/data/data_preprocessing.py
+      hash: md5
+      md5: 0cebbdd6978c60a02d402c54e4c5fbc1
+      size: 5424
+    outs:
+    - path: ./data/interim/pre_processed_df.csv
+      hash: md5
+      md5: 3c976ef5a590ae3564b8308f02b40b6f
+      size: 74557490
+  feature_engineering:
+    cmd: python src/features/feature_engineering.py
+    deps:
+    - path: ./data/interim/pre_processed_df.csv
+      hash: md5
+      md5: 3c976ef5a590ae3564b8308f02b40b6f
+      size: 74557490
+    - path: ./src/features/feature_engineering.py
+      hash: md5
+      md5: fcd80b76639d88b6c675e2d3e92c3b54
+      size: 3839
+    outs:
+    - path: ./data/processed/test_tfidf.csv
+      hash: md5
+      md5: d19930bbde1de482543587c129661978
+      size: 960011
+    - path: ./data/processed/train_tfidf.csv
+      hash: md5
+      md5: fbb39ea7e8783a6b8aaba6cef4535e17
+      size: 3840011
