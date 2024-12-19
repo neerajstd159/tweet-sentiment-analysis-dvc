@@ -9,19 +9,19 @@ stages:
       size: 238803811
     - path: ./src/data/data_ingestion.py
       hash: md5
-      md5: 77981f7456aed5cf3a08e25c97fe31e2
-      size: 3645
+      md5: 0664762c1185113e9e29be4aebcac9b0
+      size: 3812
     outs:
     - path: ./data/raw/filtered_df.csv
       hash: md5
-      md5: 30ebe1ecf42be567ef991eceb8f22620
+      md5: 8e069b3428c2ac4e2b9008c3e083717e
       size: 125819350
   data_preprocessing:
     cmd: python src/data/data_preprocessing.py
     deps:
     - path: ./data/raw/filtered_df.csv
       hash: md5
-      md5: 30ebe1ecf42be567ef991eceb8f22620
+      md5: 8e069b3428c2ac4e2b9008c3e083717e
       size: 125819350
     - path: ./src/data/data_preprocessing.py
       hash: md5
@@ -30,25 +30,49 @@ stages:
     outs:
     - path: ./data/interim/pre_processed_df.csv
       hash: md5
-      md5: 3c976ef5a590ae3564b8308f02b40b6f
+      md5: c5ddcc693091514802c3a59b484ccc4f
       size: 74557490
   feature_engineering:
     cmd: python src/features/feature_engineering.py
     deps:
     - path: ./data/interim/pre_processed_df.csv
       hash: md5
-      md5: 3c976ef5a590ae3564b8308f02b40b6f
+      md5: c5ddcc693091514802c3a59b484ccc4f
       size: 74557490
     - path: ./src/features/feature_engineering.py
       hash: md5
-      md5: fcd80b76639d88b6c675e2d3e92c3b54
-      size: 3839
+      md5: 00d2a1d6b97b565b3e834f70d4c72547
+      size: 3981
     outs:
     - path: ./data/processed/test_tfidf.csv
       hash: md5
-      md5: d19930bbde1de482543587c129661978
-      size: 960011
+      md5: 1b5ff4c27eac670ab3ab67c1fb854fce
+      size: 401022742
     - path: ./data/processed/train_tfidf.csv
       hash: md5
-      md5: fbb39ea7e8783a6b8aaba6cef4535e17
-      size: 3840011
+      md5: 4f4de9d1ba03089c21f4fd89699e8455
+      size: 1604053609
+  model_building:
+    cmd: python src/models/model_building.py
+    deps:
+    - path: data/processed/test_tfidf.csv
+      hash: md5
+      md5: 1b5ff4c27eac670ab3ab67c1fb854fce
+      size: 401022742
+    - path: data/processed/train_tfidf.csv
+      hash: md5
+      md5: 4f4de9d1ba03089c21f4fd89699e8455
+      size: 1604053609
+    - path: src/models/model_building.py
+      hash: md5
+      md5: 43b2390855efec9f928c85fe9954609c
+      size: 3440
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 8062c544437e36657e8fa63e8379d7b4
+      size: 469
+    - path: models/bernoulliNB.pkl
+      hash: md5
+      md5: 30105a5a3aa8d6d2a22d91f4d2d0c35c
+      size: 320635

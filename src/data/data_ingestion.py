@@ -99,5 +99,12 @@ def dump_data(df: pd.DataFrame) -> None:
     except Exception as e:
         logger.error(f'unexpected error occured {e}')
 
-df = load_dataset('././data/raw/tweets_sentiment.csv')
-dump_data(df)
+def main() -> None:
+    try:
+        df = load_dataset('././data/raw/tweets_sentiment.csv')
+        dump_data(df)
+    except Exception as e:
+        logger.error(f'Some error occured: {e}')
+
+if __name__ == "__main__":
+    main()

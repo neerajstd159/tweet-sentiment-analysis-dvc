@@ -39,8 +39,11 @@ def setup_logging(log_file: str = '././log/app.log') -> logging.Logger:
         return None
     
 def load_data(url: str) -> pd.DataFrame:
+    global logger
     try:
         df = pd.read_csv(url)
+        df.dropna(inplace=True)
+        df = df.sample(n=50000)
         logger.info("Dataset loaded")
         return df
     except FileNotFoundError as e:
@@ -52,6 +55,7 @@ def load_data(url: str) -> pd.DataFrame:
 
 
 def apply_tfidf(X_train: list[str], X_test: list[str], max_features: int = 10000, ngram_range: Tuple[int, int] = (1, 1)) -> Tuple[csr_matrix, csr_matrix]:
+    global logger
     try:
         tfidf = TfidfVectorizer(max_features=max_features, ngram_range=ngram_range)
         X_train_tfidf = tfidf.fit_transform(X_train)
@@ -64,6 +68,7 @@ def apply_tfidf(X_train: list[str], X_test: list[str], max_features: int = 10000
 
 
 def dump_data(train_data: pd.DataFrame, test_data: pd.DataFrame) -> None:
+    global logger
     if train_data.empty or test_data.empty:
         logger.error('Either Dataframe is empty')
         return
@@ -84,6 +89,7 @@ def dump_data(train_data: pd.DataFrame, test_data: pd.DataFrame) -> None:
         logger.error(f'unexpected error occured {e}')
 
 def main():
+    global logger
     try:
         df_url = '././data/interim/pre_processed_df.csv'
         df = load_data(df_url)

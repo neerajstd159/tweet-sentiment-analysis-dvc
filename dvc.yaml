@@ -21,3 +21,13 @@ stages:
     outs:
     - ./data/processed/test_tfidf.csv
     - ./data/processed/train_tfidf.csv
+  model_building:
+    cmd: python src/models/model_building.py
+    deps:
+    - data/processed/test_tfidf.csv
+    - data/processed/train_tfidf.csv
+    - src/models/model_building.py
+    outs:
+    - models/bernoulliNB.pkl
+    metrics:
+    - metrics/metrics.json
